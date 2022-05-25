@@ -23,4 +23,6 @@ public class Animal {
                 this.x--;
             else if (direction == 3 && areaMap[x][y--].movingCost <= this.actionPoints)
                 this.y--;
+        }
+    }
 }
