@@ -4,11 +4,11 @@ public class Dirt extends Area{
         super(movingCost, x, y);
         movingCost = 1;
     }
-    public void grow(){
+    public void grow(Area areaMap[][]){
         Random rand = new Random();
-        int chance = rand(10);
+        int chance = rand.nextInt(10);
         if (chance < 1) 
-        areaMap[this.x][this.y] = new Grass();
+        areaMap[this.x][this.y] = new Grass(1,this.x,this.y);
     // giving 10% chance for grass to regrow on dirt spots
     }
 }    

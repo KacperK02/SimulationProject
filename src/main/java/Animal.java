@@ -10,7 +10,7 @@ public class Animal {
         this.y = y;
         this.isHungry = true;
     }
-    private void move() {
+    private void move(Area areaMap[][]) {
         Random rand = new Random();
         if (this.isHungry == true) {
             //value of direction will decide in which direction our animal will proceed
