@@ -1,6 +1,6 @@
 public class Area {
-    private int movingCost;
-    private int x, y;
+    protected int movingCost;
+    protected int x, y;
 
     public Area(int movingCost, int x, int y) {
         this.movingCost = movingCost;
