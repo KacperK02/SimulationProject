@@ -4,7 +4,7 @@ public class Dirt extends Area{
         super(movingCost, x, y);
         movingCost = 1;
     }
-    public void grow(Area areaMap[][]){
+    public void grow(Area[][] areaMap){
         Random rand = new Random();
         int chance = rand.nextInt(10);
         if (chance < 1) 
