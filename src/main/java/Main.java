@@ -24,21 +24,20 @@ public class Main {
         for (int i=0; i<size;i++) {
             for (int j = 0; j < size; j++) {
                 int chance = rand.nextInt(6);
-                if (chance >= 0 && chance <=2)
-                    areaMap[i][j] = new Grass(1, i, j);
-                else if (chance == 3)
-                    areaMap[i][j] = new Mountain(9, i, j);
-                else if (chance == 4)
-                    areaMap[i][j] = new Sand(2, i, j);
-                else
-                    areaMap[i][j] = new Dirt(1, i, j);
+                switch(chance){
+                    case 0 -> areaMap[i][j] = new Grass(1, i, j);
+                    case 1 -> areaMap[i][j] = new Grass(2, i, j);
+                    case 2 -> areaMap[i][j] = new Mountain(9, i, j);
+                    case 3 -> areaMap[i][j] = new Sand(2, i, j);
+                    default -> areaMap[i][j] = new Dirt(1, i, j);
+                }
             }
         }
     }
     //wyswietlanie - umowa:
     //Trawa - kolor zielony
     //Piasek - kolor zółty
-    //Góry - kolor niebieski
+    //Góry - kolor czerwony
     //Ziemia - kolor czarny (domyslny)
     //Zebra - "Z"
     //Lew - "L"
@@ -48,19 +47,15 @@ public class Main {
         for(int i=0; i<size; i++){
             System.out.print(blackBackground + "|");
             for(int j=0; j<size; j++){
-                if(areaMap[i][j] instanceof Grass) background = "\033[42m";
-                else {
-                    if(areaMap[i][j] instanceof Sand) background = "\033[43m";
-                    else {
-                        if(areaMap[i][j] instanceof Mountain) background = "\033[44m";
-                        else background = blackBackground;
-                    }
-                }
+                if(areaMap[i][j] instanceof Dirt) background = blackBackground;
+                else if(areaMap[i][j] instanceof Mountain) background = "\033[41m";
+                else if(areaMap[i][j] instanceof Grass) background = "\033[42m";
+                else background = "\033[43m";
 
-                if(animalMap[i][j] instanceof Zebra) System.out.print(background + "Z" + blackBackground);
+                if(animalMap[i][j] instanceof Zebra) System.out.print(background + "Z");
                 else {
-                    if(animalMap[i][j] instanceof Lion) System.out.print(background + "L" + blackBackground);
-                    else System.out.print(blackBackground + " ");
+                    if(animalMap[i][j] instanceof Lion) System.out.print(background + "L");
+                    else System.out.print(background + " ");
                 }
             }
             System.out.println(blackBackground + "|");
