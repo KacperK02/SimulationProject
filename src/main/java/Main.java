@@ -1,4 +1,4 @@
-import java.io.Console;
+import java.io.*;
 import java.lang.management.MonitorInfo;
 import java.util.Scanner;
 import java.util.Random;
@@ -11,10 +11,11 @@ public class Main {
                 int chance = rand.nextInt(6);
                 if (chance == 1 && !(areaMap[i][j] instanceof Mountain))
                     animalMap[i][j] = new Lion (5,i,j,true);
+
                 else if (chance == 2 && !(areaMap[i][j] instanceof Mountain))
                     animalMap[i][j] = new Zebra (5,i,j,true);
-                else
-                    animalMap[i][j] = null;
+
+                else animalMap[i][j] = null;
             }
         }
     }
@@ -61,11 +62,12 @@ public class Main {
             System.out.println(blackBackground + "|");
         }
     }
-    public static void main(String []args){
+    public static void main(String []args) throws FileNotFoundException {
         System.out.print("Podaj rozmiar mapy: ");
         Scanner scanner = new Scanner(System.in);
         int size = scanner.nextInt();
-        Random rand = new Random();
+        System.out.print("Ile tur symulacji przeprowadzic?: ");
+        int numberOfTurns = scanner.nextInt();
 
         //Inicjalizacja tablic
         Animal [][]animalMap = new Animal[size][size];
@@ -75,6 +77,45 @@ public class Main {
         generateAreaMap(areaMap, size);
         generateAnimalMap(animalMap, size, areaMap);
 
-        showMap(animalMap, areaMap, size);
+        int lionPopulation, zebraPopulation;
+        PrintWriter save = new PrintWriter("simulation.txt");
+
+        //przebieg symulacji
+        for(int turn = 1; turn <= numberOfTurns; turn++){
+
+            //zliczanie ilosci lwow i zebr
+            lionPopulation = 0;
+            zebraPopulation = 0;
+            for(int i=0; i<size; i++){
+                for(int j=0; j<size; j++){
+                    if(animalMap[i][j] instanceof Lion) lionPopulation++;
+                    else if(animalMap[i][j] instanceof Zebra) zebraPopulation++;
+                }
+            }
+
+            //Wypisanie informacji o stanie sytuacji na planszy
+            System.out.println();
+            System.out.println("Tura " + turn);
+            System.out.println("Populacja lwow: " + lionPopulation);
+            System.out.println("Populacja zebr: " + zebraPopulation);
+
+            //zapis informacji o stanie symulacji do pliku
+            save.println("Tura " + turn);
+            save.println("Populacja lwow: " + lionPopulation);
+            save.println("Populacja zebr: " + zebraPopulation);
+            save.println();
+
+            //wyswietlenie mapy
+            showMap(animalMap, areaMap, size);
+            System.out.println();
+            for(int i=0; i<size+2; i++) System.out.print("-");
+
+            for(int i=0; i<size; i++){
+                for(int j=0; j<0; j++){
+                    //przebieg jednej tury symulacji
+                }
+            }
+        }
+        save.close();
     }
 }
