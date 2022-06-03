@@ -114,7 +114,7 @@ public class Main {
             for(int i=0; i<size; i++){
                 for(int j=0; j<size; j++){
                     if(animalMap[i][j] instanceof Zebra){
-                        //animalMap[i][j].move(areaMap, animalMap, i, j); <- nie dziala
+                        animalMap[i][j].move(areaMap, animalMap, i, j, size);
                         animalMap[i][j].eat(areaMap, animalMap);
                     }
                 }

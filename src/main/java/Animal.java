@@ -10,7 +10,7 @@ public class Animal {
         this.y = y;
         this.isHungry = true;
     }
-    public void move(Area[][] areaMap, Animal[][] animalMap, int x, int y) {
+    /*public void move(Area[][] areaMap, Animal[][] animalMap, int x, int y) {
         Random rand = new Random();
         while(isHungry && actionPoints>0){
             int direction = rand.nextInt(4);
@@ -31,6 +31,10 @@ public class Animal {
                 this.y--;
             }
         }
+    }*/
+
+    public void move(Area[][] areaMap, Animal[][] animalMap, int x, int y, int size){
+
     }
 
     public void eat(Area [][]areaMap, Animal [][]animalMap){
