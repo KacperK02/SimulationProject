@@ -2,7 +2,7 @@ public class Lion extends Animal{
     public Lion(int actionPoints, int x, int y, boolean isHungry) {
         super(actionPoints, x, y, isHungry);
     }
-    public void eat (Animal [][]animalMap){
+    public void eat (Area [][]areaMap, Animal [][]animalMap){
         if (this.isHungry && animalMap[this.x+1][this.y] instanceof Zebra) {
             this.isHungry = false;
             animalMap[this.x+1][this.y] = null;

@@ -110,9 +110,22 @@ public class Main {
             System.out.println();
             for(int i=0; i<size+2; i++) System.out.print("-");
 
+            //faza poruszania
             for(int i=0; i<size; i++){
-                for(int j=0; j<0; j++){
-                    //przebieg jednej tury symulacji
+                for(int j=0; j<size; j++){
+                    if(animalMap[i][j] instanceof Zebra){
+                        //animalMap[i][j].move(areaMap, animalMap, i, j); <- nie dziala
+                        animalMap[i][j].eat(areaMap, animalMap);
+                    }
+                }
+            }
+
+            //faza umierania i odrastania trawy
+            for(int i=0; i<size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if ((animalMap[i][j] instanceof Zebra || animalMap[i][j] instanceof Lion) && animalMap[i][j].isHungry)
+                        animalMap[i][j] = null;
+                    if(areaMap[i][j] instanceof Dirt) areaMap[i][j].grow(areaMap);
                 }
             }
         }
