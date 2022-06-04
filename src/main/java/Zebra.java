@@ -13,7 +13,7 @@ public class Zebra extends Animal{
 
     public void move(Area[][] areaMap, Animal[][] animalMap, int x, int y, int size){
         Random rand = new Random();
-        while(isHungry && this.actionPoints > 0){
+        while(isHungry && this.actionPoints > 0 && animalMap[x][y]!=null){
             int direction = rand.nextInt(4);
             switch(direction){
                 case 0 -> {
@@ -21,6 +21,8 @@ public class Zebra extends Animal{
                         //this.actionPoints = this.actionPoints - areaMap[x+1][y].movingCost;
                         animalMap[x+1][y] = new Zebra(this.actionPoints - areaMap[x+1][y].movingCost,x+1,y,true);
                         animalMap[x][y] = null;
+                        animalMap[x+1][y].eat(areaMap,animalMap);
+                        animalMap[x+1][y].move(areaMap,animalMap,x+1,y,size);
                     }
                 }
                 case 1 -> {
@@ -28,6 +30,8 @@ public class Zebra extends Animal{
                         //this.actionPoints = this.actionPoints - areaMap[x-1][y].movingCost;
                         animalMap[x-1][y] = new Zebra(this.actionPoints - areaMap[x-1][y].movingCost,x-1,y,true);
                         animalMap[x][y] = null;
+                        animalMap[x-1][y].eat(areaMap,animalMap);
+                        animalMap[x-1][y].move(areaMap,animalMap,x-1,y,size);
                     }
                 }
                 case 2 -> {
@@ -35,6 +39,8 @@ public class Zebra extends Animal{
                         //this.actionPoints = this.actionPoints - areaMap[x][y+1].movingCost;
                         animalMap[x][y+1] = new Zebra(this.actionPoints - areaMap[x][y+1].movingCost,x,y+1,true);
                         animalMap[x][y] = null;
+                        animalMap[x][y+1].eat(areaMap,animalMap);
+                        animalMap[x][y+1].move(areaMap,animalMap,x,y+1,size);
                     }
                 }
                 case 3 -> {
@@ -42,6 +48,8 @@ public class Zebra extends Animal{
                         //this.actionPoints = this.actionPoints - areaMap[x][y-1].movingCost;
                         animalMap[x][y-1] = new Zebra(this.actionPoints - areaMap[x][y-1].movingCost,x,y-1,true);
                         animalMap[x][y] = null;
+                        animalMap[x][y-1].eat(areaMap,animalMap);
+                        animalMap[x][y-1].move(areaMap,animalMap,x,y-1,size);
                     }
                 }
             }

@@ -113,12 +113,12 @@ public class Main {
             //faza poruszania
             for(int i=0; i<size; i++){
                 for(int j=0; j<size; j++){
-                    if(animalMap[i][j] instanceof Zebra){
-                        animalMap[i][j].move(areaMap, animalMap, i, j, size);
-                        animalMap[i][j].eat(areaMap, animalMap);
+                        if(animalMap[i][j] instanceof Zebra){
+                            animalMap[i][j].eat(areaMap, animalMap);
+                            animalMap[i][j].move(areaMap, animalMap, i, j, size);
+                        }
                     }
                 }
-            }
 
             //faza umierania i odrastania trawy
             for(int i=0; i<size; i++) {

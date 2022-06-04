@@ -5,10 +5,10 @@ public class Animal {
     protected boolean isHungry;
 
     public Animal(int actionPoints, int x, int y, boolean isHungry) {
-        this.actionPoints = 5;
+        this.actionPoints = actionPoints;
         this.x = x;
         this.y = y;
-        this.isHungry = true;
+        this.isHungry = isHungry;
     }
     /*public void move(Area[][] areaMap, Animal[][] animalMap, int x, int y) {
         Random rand = new Random();
