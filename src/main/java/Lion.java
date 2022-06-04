@@ -6,13 +6,15 @@ public class Lion extends Animal{
     }
     public void move (Area [][] areaMap, Animal [][]animalMap,int x,int y, int size){
         Random rand = new Random();
-        while(isHungry && this.actionPoints > 0){
+        while(isHungry && this.actionPoints > 0 && animalMap[x][y]!=null){
         int direction = rand.nextInt(4);
         switch(direction){
             case 0 -> {
                 if(x+1<size && (animalMap[x+1][y] instanceof Zebra || animalMap[x+1][y] == null) && areaMap[x+1][y].movingCost <= this.actionPoints){
-                    if (animalMap[x+1][y] == null)
-                        animalMap[x+1][y] = new Lion(this.actionPoints - areaMap[x+1][y].movingCost, x+1, y, true);
+                    if (animalMap[x+1][y] == null) {
+                        animalMap[x + 1][y] = new Lion(this.actionPoints - areaMap[x + 1][y].movingCost, x + 1, y, true);
+                        animalMap[x + 1][y].move(areaMap, animalMap, x + 1, y, size);
+                    }
                     else
                         animalMap[x+1][y] = new Lion(this.actionPoints - areaMap[x+1][y].movingCost, x+1, y, false);
                     animalMap[x][y] = null;
@@ -20,8 +22,10 @@ public class Lion extends Animal{
             }
             case 1 -> {
                 if(x-1>=0 && (animalMap[x-1][y] instanceof Zebra || animalMap[x-1][y]==null) && areaMap[x-1][y].movingCost <= this.actionPoints){
-                    if (animalMap[x-1][y] == null)
-                        animalMap[x-1][y] = new Lion(this.actionPoints - areaMap[x-1][y].movingCost, x-1, y, true);
+                    if (animalMap[x-1][y] == null) {
+                        animalMap[x - 1][y] = new Lion(this.actionPoints - areaMap[x - 1][y].movingCost, x - 1, y, true);
+                        animalMap[x - 1][y].move(areaMap, animalMap, x - 1, y, size);
+                    }
                     else
                         animalMap[x-1][y] = new Lion(this.actionPoints - areaMap[x-1][y].movingCost, x-1, y, false);
                     animalMap[x][y] = null;
@@ -29,8 +33,10 @@ public class Lion extends Animal{
             }
             case 2 -> {
                 if(y+1<size && (animalMap[x][y+1] instanceof Zebra || animalMap[x][y+1]==null) && areaMap[x][y+1].movingCost <= this.actionPoints){
-                    if (animalMap[x][y+1] == null)
-                        animalMap[x][y+1] = new Lion(this.actionPoints - areaMap[x][y+1].movingCost, x, y+1, true);
+                    if (animalMap[x][y+1] == null) {
+                        animalMap[x][y + 1] = new Lion(this.actionPoints - areaMap[x][y + 1].movingCost, x, y + 1, true);
+                        animalMap[x][y + 1].move(areaMap, animalMap, x, y + 1, size);
+                    }
                     else
                         animalMap[x][y+1] = new Lion(this.actionPoints - areaMap[x][y+1].movingCost, x, y+1, false);
                     animalMap[x][y] = null;
@@ -38,8 +44,10 @@ public class Lion extends Animal{
             }
             case 3 -> {
                 if(y-1>=0 && (animalMap[x][y-1] instanceof Zebra || animalMap[x][y-1]==null) && areaMap[x][y-1].movingCost <= this.actionPoints){
-                    if (animalMap[x][y-1] == null)
-                        animalMap[x][y-1] = new Lion(this.actionPoints - areaMap[x][y-1].movingCost, x, y-1, true);
+                    if (animalMap[x][y-1] == null) {
+                        animalMap[x][y - 1] = new Lion(this.actionPoints - areaMap[x][y - 1].movingCost, x, y - 1, true);
+                        animalMap[x][y - 1].move(areaMap, animalMap, x, y - 1, size);
+                    }
                     else
                         animalMap[x][y-1] = new Lion(this.actionPoints - areaMap[x][y-1].movingCost, x, y-1, false);
                     animalMap[x][y] = null;

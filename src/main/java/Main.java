@@ -116,6 +116,13 @@ public class Main {
                         if(animalMap[i][j] instanceof Zebra){
                             animalMap[i][j].eat(areaMap, animalMap);
                             animalMap[i][j].move(areaMap, animalMap, i, j, size);
+                            System.out.println();
+                            showMap(animalMap,areaMap,size);
+                        }
+                        else if (animalMap[i][j] instanceof Lion) {
+                            animalMap[i][j].move(areaMap, animalMap, i, j, size);
+                            System.out.println();
+                            showMap(animalMap, areaMap, size);
                         }
                     }
                 }
