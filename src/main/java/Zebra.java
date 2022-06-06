@@ -30,36 +30,36 @@ public class Zebra extends Animal{
                     if(x+1<size && animalMap[x+1][y]==null && areaMap[x+1][y].movingCost <= this.actionPoints){
                         //this.actionPoints = this.actionPoints - areaMap[x+1][y].movingCost;
                         animalMap[x+1][y] = new Zebra(this.actionPoints - areaMap[x+1][y].movingCost,x+1,y,true);
-                        animalMap[x][y] = null;
                         animalMap[x+1][y].eat(areaMap,animalMap);
                         animalMap[x+1][y].move(areaMap,animalMap,x+1,y,size);
+                        animalMap[x][y] = null;
                     }
                 }
                 case 1 -> {
                     if(x-1>=0 && animalMap[x-1][y]==null && areaMap[x-1][y].movingCost <= this.actionPoints){
                         //this.actionPoints = this.actionPoints - areaMap[x-1][y].movingCost;
                         animalMap[x-1][y] = new Zebra(this.actionPoints - areaMap[x-1][y].movingCost,x-1,y,true);
-                        animalMap[x][y] = null;
                         animalMap[x-1][y].eat(areaMap,animalMap);
                         animalMap[x-1][y].move(areaMap,animalMap,x-1,y,size);
+                        animalMap[x][y] = null;
                     }
                 }
                 case 2 -> {
                     if(y+1<size && animalMap[x][y+1]==null && areaMap[x][y+1].movingCost <= this.actionPoints){
                         //this.actionPoints = this.actionPoints - areaMap[x][y+1].movingCost;
                         animalMap[x][y+1] = new Zebra(this.actionPoints - areaMap[x][y+1].movingCost,x,y+1,true);
-                        animalMap[x][y] = null;
                         animalMap[x][y+1].eat(areaMap,animalMap);
                         animalMap[x][y+1].move(areaMap,animalMap,x,y+1,size);
+                        animalMap[x][y] = null;
                     }
                 }
                 case 3 -> {
                     if(y-1>=0 && animalMap[x][y-1]==null && areaMap[x][y-1].movingCost <= this.actionPoints){
                         //this.actionPoints = this.actionPoints - areaMap[x][y-1].movingCost;
                         animalMap[x][y-1] = new Zebra(this.actionPoints - areaMap[x][y-1].movingCost,x,y-1,true);
-                        animalMap[x][y] = null;
                         animalMap[x][y-1].eat(areaMap,animalMap);
                         animalMap[x][y-1].move(areaMap,animalMap,x,y-1,size);
+                        animalMap[x][y] = null;
                     }
                 }
             }

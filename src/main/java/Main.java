@@ -81,15 +81,15 @@ public class Main {
         PrintWriter save = new PrintWriter("simulation.txt");
 
         //przebieg symulacji
-        for(int turn = 1; turn <= numberOfTurns; turn++){
+        for(int turn = 1; turn <= numberOfTurns; turn++) {
 
             //zliczanie ilosci lwow i zebr
             lionPopulation = 0;
             zebraPopulation = 0;
-            for(int i=0; i<size; i++){
-                for(int j=0; j<size; j++){
-                    if(animalMap[i][j] instanceof Lion) lionPopulation++;
-                    else if(animalMap[i][j] instanceof Zebra) zebraPopulation++;
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (animalMap[i][j] instanceof Lion) lionPopulation++;
+                    else if (animalMap[i][j] instanceof Zebra) zebraPopulation++;
                 }
             }
 
@@ -108,32 +108,31 @@ public class Main {
             //wyswietlenie mapy
             showMap(animalMap, areaMap, size);
             System.out.println();
-            for(int i=0; i<size+2; i++) System.out.print("-");
+            for (int i = 0; i < size + 2; i++) System.out.print("-");
 
             //faza poruszania
-            for(int i=0; i<size; i++){
-                for(int j=0; j<size; j++){
-                        if(animalMap[i][j] instanceof Zebra){
-                            animalMap[i][j].eat(areaMap, animalMap);
-                            animalMap[i][j].move(areaMap, animalMap, i, j, size);
-                            System.out.println();
-                            showMap(animalMap,areaMap,size);
-                        }
-                        else if (animalMap[i][j] instanceof Lion) {
-                            //animalMap[i][j].eat(areaMap, animalMap);
-                            animalMap[i][j].move(areaMap, animalMap, i, j, size);
-                            System.out.println();
-                            showMap(animalMap, areaMap, size);
-                        }
-                    }
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (animalMap[i][j] instanceof Zebra) {
+                        animalMap[i][j].eat(areaMap, animalMap);
+                        animalMap[i][j].move(areaMap, animalMap, i, j, size);
+                        System.out.println();
+                        showMap(animalMap, areaMap, size);
+                    } else if (animalMap[i][j] instanceof Lion) {
+                        animalMap[i][j].eat(areaMap, animalMap);
+                        animalMap[i][j].move(areaMap, animalMap, i, j, size);
+                        System.out.println();
+                        showMap(animalMap, areaMap, size);
+                   }
                 }
+            }
 
             //faza umierania i odrastania trawy
-            for(int i=0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     if ((animalMap[i][j] instanceof Zebra || animalMap[i][j] instanceof Lion) && animalMap[i][j].isHungry)
                         animalMap[i][j] = null;
-                    if(areaMap[i][j] instanceof Dirt) areaMap[i][j].grow(areaMap);
+                    if (areaMap[i][j] instanceof Dirt) areaMap[i][j].grow(areaMap);
                 }
             }
 
@@ -150,6 +149,19 @@ public class Main {
         }
         System.out.println();
         showMap(animalMap, areaMap, size);
+        lionPopulation = 0;
+        zebraPopulation = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (animalMap[i][j] instanceof Lion) lionPopulation++;
+                else if (animalMap[i][j] instanceof Zebra) zebraPopulation++;
+            }
+        }
+
+        //Wypisanie informacji o stanie sytuacji na planszy
+        System.out.println();
+        System.out.println("Populacja lwow: " + lionPopulation);
+        System.out.println("Populacja zebr: " + zebraPopulation);
         save.close();
         System.out.println("Koniec");
     }
