@@ -120,6 +120,7 @@ public class Main {
                             showMap(animalMap,areaMap,size);
                         }
                         else if (animalMap[i][j] instanceof Lion) {
+                            //animalMap[i][j].eat(areaMap, animalMap);
                             animalMap[i][j].move(areaMap, animalMap, i, j, size);
                             System.out.println();
                             showMap(animalMap, areaMap, size);
@@ -136,6 +137,8 @@ public class Main {
                 }
             }
         }
+        showMap(animalMap, areaMap, size);
         save.close();
+        System.out.println("Koniec");
     }
 }

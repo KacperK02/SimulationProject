@@ -5,8 +5,14 @@ public class Lion extends Animal{
         super(actionPoints, x, y, isHungry);
     }
     public void move (Area [][] areaMap, Animal [][]animalMap,int x,int y, int size){
+        int obstructions = 0;
+        if(x+1<size && (animalMap[x+1][y] instanceof Lion || areaMap[x+1][y].movingCost > this.actionPoints)) obstructions++;
+        if(x-1>=0 && (animalMap[x-1][y] instanceof Lion || areaMap[x-1][y].movingCost > this.actionPoints)) obstructions++;
+        if(y+1<size && (animalMap[x][y+1] instanceof Lion || areaMap[x][y+1].movingCost > this.actionPoints)) obstructions++;
+        if(y-1>=0 && (animalMap[x][y-1] instanceof Lion || areaMap[x][y-1].movingCost > this.actionPoints)) obstructions++;
+
         Random rand = new Random();
-        while(isHungry && this.actionPoints > 0 && animalMap[x][y]!=null){
+        while(isHungry && this.actionPoints > 0 && animalMap[x][y]!=null && obstructions!=4){
         int direction = rand.nextInt(4);
         switch(direction){
             case 0 -> {
