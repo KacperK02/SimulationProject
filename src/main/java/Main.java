@@ -140,10 +140,13 @@ public class Main {
             //odzyskiwanie punktów ruchu
             for(int i=0; i<size; i++) {
                 for (int j = 0; j < size; j++) {
-                    if (animalMap[i][j] instanceof Zebra || animalMap[i][j] instanceof Lion)
+                    if (animalMap[i][j] instanceof Zebra || animalMap[i][j] instanceof Lion) {
                         animalMap[i][j].actionPoints = 5;
+                        animalMap[i][j].isHungry = true;
+                    }
                 }
             }
+
         }
         System.out.println();
         showMap(animalMap, areaMap, size);
