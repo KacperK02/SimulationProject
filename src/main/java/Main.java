@@ -35,13 +35,7 @@ public class Main {
             }
         }
     }
-    //wyswietlanie - umowa:
-    //Trawa - kolor zielony
-    //Piasek - kolor zółty
-    //Góry - kolor czerwony
-    //Ziemia - kolor czarny (domyslny)
-    //Zebra - "Z"
-    //Lew - "L"
+
     public static void showMap(Animal [][]animalMap, Area [][]areaMap, int size){
         String blackBackground = "\033[40m";
         String background = "";
@@ -63,11 +57,16 @@ public class Main {
         }
     }
     public static void main(String []args) throws FileNotFoundException {
+        //Pobranie danych do symulacji od użytkownika
         System.out.print("Podaj rozmiar mapy: ");
         Scanner scanner = new Scanner(System.in);
         int size = scanner.nextInt();
         System.out.print("Ile tur symulacji przeprowadzic?: ");
         int numberOfTurns = scanner.nextInt();
+        System.out.println("Czy chcesz ogladac kazdy krok symulacji, czy jednynie stan na planszy po calej turze?");
+        System.out.println("1 - kazdy krok symulacji");
+        System.out.println("0 - Jedynie po calej turze");
+        int userChoice = scanner.nextInt();
 
         //Inicjalizacja tablic
         Animal [][]animalMap = new Animal[size][size];
@@ -98,6 +97,7 @@ public class Main {
             System.out.println("Tura " + turn);
             System.out.println("Populacja lwow: " + lionPopulation);
             System.out.println("Populacja zebr: " + zebraPopulation);
+            System.out.println();
 
             //zapis informacji o stanie symulacji do pliku
             save.println("Tura " + turn);
@@ -105,10 +105,8 @@ public class Main {
             save.println("Populacja zebr: " + zebraPopulation);
             save.println();
 
-            //wyswietlenie mapy
             showMap(animalMap, areaMap, size);
             System.out.println();
-            for (int i = 0; i < size + 2; i++) System.out.print("-");
 
             //faza poruszania
             for (int i = 0; i < size; i++) {
@@ -116,13 +114,18 @@ public class Main {
                     if (animalMap[i][j] instanceof Zebra) {
                         animalMap[i][j].eat(areaMap, animalMap);
                         animalMap[i][j].move(areaMap, animalMap, i, j, size);
-                        System.out.println();
-                        showMap(animalMap, areaMap, size);
+                        //System.out.println();
+                        if(userChoice >= 1) {
+                            System.out.println();
+                            showMap(animalMap, areaMap, size);
+                        }
                     } else if (animalMap[i][j] instanceof Lion) {
                         animalMap[i][j].eat(areaMap, animalMap);
                         animalMap[i][j].move(areaMap, animalMap, i, j, size);
-                        System.out.println();
-                        showMap(animalMap, areaMap, size);
+                        if(userChoice >= 1) {
+                            System.out.println();
+                            showMap(animalMap, areaMap, size);
+                        }
                    }
                 }
             }
@@ -147,8 +150,8 @@ public class Main {
             }
 
         }
-        System.out.println();
-        showMap(animalMap, areaMap, size);
+
+        System.out.println("Po zakonczeniu symulacji:");
         lionPopulation = 0;
         zebraPopulation = 0;
         for (int i = 0; i < size; i++) {
@@ -158,11 +161,15 @@ public class Main {
             }
         }
 
-        //Wypisanie informacji o stanie sytuacji na planszy
-        System.out.println();
         System.out.println("Populacja lwow: " + lionPopulation);
         System.out.println("Populacja zebr: " + zebraPopulation);
+        System.out.println();
+        showMap(animalMap, areaMap, size);
+
+        save.println("Po zakończeniu symulacji:");
+        save.println("Populacja lwow: " + lionPopulation);
+        save.println("Populacja zebr: " + zebraPopulation);
+        save.println();
         save.close();
-        System.out.println("Koniec");
     }
 }
