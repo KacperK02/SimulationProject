@@ -7,6 +7,6 @@ public class Dirt extends Area{
     public void grow(Area[][] areaMap){
         Random rand = new Random();
         int chance = rand.nextInt(6);
-        if (chance < 1) areaMap[this.x][this.y] = new Grass(1,this.x,this.y);
+        if (chance < 1) areaMap[this.getX()][this.getY()] = new Grass(1,this.getX(),this.getY());
     }
 }    
