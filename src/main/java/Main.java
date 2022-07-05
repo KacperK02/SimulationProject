@@ -56,6 +56,44 @@ public class Main {
             System.out.println(blackBackground + "|");
         }
     }
+
+    public static void showAndSaveStats(int lionPopulation, int zebraPopulation, PrintWriter save){
+        System.out.println("Populacja lwow: " + lionPopulation);
+        System.out.println("Populacja zebr: " + zebraPopulation);
+        System.out.println();
+
+        save.println("Populacja lwow: " + lionPopulation);
+        save.println("Populacja zebr: " + zebraPopulation);
+        save.println();
+    }
+
+    public static int countPopulation(Animal[][] animalMap, int size, int parametr){
+        //0 = count Lion, 1 = count Zebra
+        int population = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(parametr==0){
+                    if(animalMap[i][j] instanceof Lion) population++;
+                }
+                else if(animalMap[i][j] instanceof Zebra) population++;
+            }
+        }
+        return population;
+    }
+
+    public static void prepareNewTurn(Animal[][] animalMap, Area[][] areaMap, int size){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if ((animalMap[i][j] instanceof Zebra || animalMap[i][j] instanceof Lion) && animalMap[i][j].isHungry())
+                    animalMap[i][j] = null;
+                if (animalMap[i][j] instanceof Zebra || animalMap[i][j] instanceof Lion){
+                    animalMap[i][j].setActionPoints(5);
+                    animalMap[i][j].setHungry(true);
+                }
+                if (areaMap[i][j] instanceof Dirt) areaMap[i][j].grow(areaMap);
+            }
+        }
+    }
     public static void main(String []args) throws FileNotFoundException {
         //Pobranie danych do symulacji od użytkownika
         System.out.print("Podaj rozmiar mapy: ");
@@ -83,32 +121,19 @@ public class Main {
         for(int turn = 1; turn <= numberOfTurns; turn++) {
 
             //zliczanie ilosci lwow i zebr
-            lionPopulation = 0;
-            zebraPopulation = 0;
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    if (animalMap[i][j] instanceof Lion) lionPopulation++;
-                    else if (animalMap[i][j] instanceof Zebra) zebraPopulation++;
-                }
-            }
+            lionPopulation = countPopulation(animalMap, size, 0);
+            zebraPopulation = countPopulation(animalMap, size, 1);
 
             //Wypisanie informacji o stanie sytuacji na planszy
             System.out.println();
             System.out.println("Tura " + turn);
-            System.out.println("Populacja lwow: " + lionPopulation);
-            System.out.println("Populacja zebr: " + zebraPopulation);
-            System.out.println();
-
-            //zapis informacji o stanie symulacji do pliku
             save.println("Tura " + turn);
-            save.println("Populacja lwow: " + lionPopulation);
-            save.println("Populacja zebr: " + zebraPopulation);
-            save.println();
+            showAndSaveStats(lionPopulation, zebraPopulation, save);
 
             showMap(animalMap, areaMap, size);
             System.out.println();
 
-            //faza poruszania
+            //symulacja
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     if (animalMap[i][j] instanceof Zebra) {
@@ -129,46 +154,18 @@ public class Main {
                 }
             }
 
-            //faza umierania i odrastania trawy
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    if ((animalMap[i][j] instanceof Zebra || animalMap[i][j] instanceof Lion) && animalMap[i][j].isHungry())
-                        animalMap[i][j] = null;
-                    if (areaMap[i][j] instanceof Dirt) areaMap[i][j].grow(areaMap);
-                }
-            }
-
-            //odzyskiwanie punktów ruchu
-            for(int i=0; i<size; i++) {
-                for (int j = 0; j < size; j++) {
-                    if (animalMap[i][j] instanceof Zebra || animalMap[i][j] instanceof Lion) {
-                        animalMap[i][j].setActionPoints(5);
-                        animalMap[i][j].setHungry(true);
-                    }
-                }
-            }
+            prepareNewTurn(animalMap, areaMap, size);
 
         }
+
+        lionPopulation = countPopulation(animalMap, size, 0);
+        zebraPopulation = countPopulation(animalMap, size, 1);
 
         System.out.println("Po zakonczeniu symulacji:");
-        lionPopulation = 0;
-        zebraPopulation = 0;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (animalMap[i][j] instanceof Lion) lionPopulation++;
-                else if (animalMap[i][j] instanceof Zebra) zebraPopulation++;
-            }
-        }
-
-        System.out.println("Populacja lwow: " + lionPopulation);
-        System.out.println("Populacja zebr: " + zebraPopulation);
-        System.out.println();
+        save.println("Po zakończeniu symulacji:");
+        showAndSaveStats(lionPopulation, zebraPopulation, save);
         showMap(animalMap, areaMap, size);
 
-        save.println("Po zakończeniu symulacji:");
-        save.println("Populacja lwow: " + lionPopulation);
-        save.println("Populacja zebr: " + zebraPopulation);
-        save.println();
         save.close();
     }
 }
