@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class Main {
-    public static void generateAnimalMap(Animal [][]animalMap, int size, Area [][]areaMap){
+    public static void generateRandomAnimalMap(Animal [][]animalMap, int size, Area [][]areaMap){
         Random rand = new Random();
         for (int i=0; i<size;i++) {
             for (int j=0;j<size;j++) {
@@ -18,6 +18,40 @@ public class Main {
                 else animalMap[i][j] = null;
             }
         }
+    }
+
+    public static void generateAnimalMap(Animal [][]animalMap, int size, Area [][]areaMap){
+        Random rand = new Random();
+        Scanner scanner = new Scanner(System.in);
+        int numberOfLions = 3 * size;
+        while(numberOfLions > 2 * size){
+            System.out.print("Podaj ile lwow umiescic na planszy (max 2x rozmiar): ");
+            numberOfLions = scanner.nextInt();
+        }
+        int numberOfZebra = 3 * size;
+        while(numberOfZebra > 2 * size){
+            System.out.print("Podaj ile zebr umiescic na planszy (max 2x rozmiar): ");
+            numberOfZebra = scanner.nextInt();
+        }
+        while(numberOfLions>0){
+            int x = rand.nextInt(size);
+            int y = rand.nextInt(size);
+            if(animalMap[x][y]==null)
+                if(!(areaMap[x][y] instanceof Mountain)){
+                    animalMap[x][y] = new Lion (5,x,y,true);
+                    numberOfLions--;
+                }
+        }
+        while(numberOfZebra>0){
+            int x = rand.nextInt(size);
+            int y = rand.nextInt(size);
+            if(animalMap[x][y]==null)
+                if(!(areaMap[x][y] instanceof Mountain)){
+                    animalMap[x][y] = new Zebra (5,x,y,true);
+                    numberOfZebra--;
+                }
+        }
+
     }
 
     public static void generateAreaMap(Area [][]areaMap, int size){
@@ -96,11 +130,19 @@ public class Main {
     }
     public static void main(String []args) throws FileNotFoundException {
         //Pobranie danych do symulacji od użytkownika
-        System.out.print("Podaj rozmiar mapy: ");
         Scanner scanner = new Scanner(System.in);
-        int size = scanner.nextInt();
-        System.out.print("Ile tur symulacji przeprowadzic?: ");
-        int numberOfTurns = scanner.nextInt();
+        int size = 0;
+        while(size<1){
+            System.out.print("Podaj rozmiar mapy: ");
+            size = scanner.nextInt();
+        }
+        int numberOfTurns = 0;
+        while(numberOfTurns<1){
+            System.out.print("Ile tur symulacji przeprowadzic?: ");
+            numberOfTurns = scanner.nextInt();
+        }
+        System.out.print("W jaki sposob rozstawic zwierzeta? (1 - losowo, 0 - podac ilosc): ");
+        int animalChoice = scanner.nextInt();
         System.out.println("Czy chcesz ogladac kazdy krok symulacji, czy jednynie stan na planszy po calej turze?");
         System.out.println("1 - kazdy krok symulacji");
         System.out.println("0 - Jedynie po calej turze");
@@ -112,7 +154,8 @@ public class Main {
 
         //Generowanie map
         generateAreaMap(areaMap, size);
-        generateAnimalMap(animalMap, size, areaMap);
+        if(animalChoice == 1) generateRandomAnimalMap(animalMap, size, areaMap);
+        else generateAnimalMap(animalMap, size, areaMap);
 
         int lionPopulation, zebraPopulation;
         PrintWriter save = new PrintWriter("simulation.txt");
@@ -169,3 +212,7 @@ public class Main {
         save.close();
     }
 }
+
+//TODO:
+//dodac mozliwosc podawania przez uzytkownika czy generowac gory/pustynie
+//dodac mozliwosc podawania przez uzytkownika ilosc punktow ruchu dla zwierzat
