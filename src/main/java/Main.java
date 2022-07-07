@@ -54,7 +54,7 @@ public class Main {
 
     }
 
-    public static void generateAreaMap(Area [][]areaMap, int size){
+    public static void generateFullAreaMap(Area [][]areaMap, int size){
         Random rand = new Random();
         for (int i=0; i<size;i++) {
             for (int j = 0; j < size; j++) {
@@ -64,6 +64,50 @@ public class Main {
                     case 1 -> areaMap[i][j] = new Grass(2, i, j);
                     case 2 -> areaMap[i][j] = new Mountain(9, i, j);
                     case 3 -> areaMap[i][j] = new Sand(2, i, j);
+                    default -> areaMap[i][j] = new Dirt(1, i, j);
+                }
+            }
+        }
+    }
+
+    public static void generateSimpleAreaMap(Area [][]areaMap, int size){
+        Random rand = new Random();
+        for (int i=0; i<size;i++) {
+            for (int j = 0; j < size; j++) {
+                int chance = rand.nextInt(4);
+                switch(chance){
+                    case 0 -> areaMap[i][j] = new Grass(1, i, j);
+                    case 1 -> areaMap[i][j] = new Grass(2, i, j);
+                    default -> areaMap[i][j] = new Dirt(1, i, j);
+                }
+            }
+        }
+    }
+
+    public static void generateAreaMapWithSand(Area [][]areaMap, int size){
+        Random rand = new Random();
+        for (int i=0; i<size;i++) {
+            for (int j = 0; j < size; j++) {
+                int chance = rand.nextInt(5);
+                switch(chance){
+                    case 0 -> areaMap[i][j] = new Grass(1, i, j);
+                    case 1 -> areaMap[i][j] = new Grass(2, i, j);
+                    case 2 -> areaMap[i][j] = new Sand(2, i, j);
+                    default -> areaMap[i][j] = new Dirt(1, i, j);
+                }
+            }
+        }
+    }
+
+    public static void generateAreaMapWithMountains(Area [][]areaMap, int size){
+        Random rand = new Random();
+        for (int i=0; i<size;i++) {
+            for (int j = 0; j < size; j++) {
+                int chance = rand.nextInt(5);
+                switch(chance){
+                    case 0 -> areaMap[i][j] = new Grass(1, i, j);
+                    case 1 -> areaMap[i][j] = new Grass(2, i, j);
+                    case 2 -> areaMap[i][j] = new Mountain(9, i, j);
                     default -> areaMap[i][j] = new Dirt(1, i, j);
                 }
             }
@@ -143,6 +187,10 @@ public class Main {
         }
         System.out.print("W jaki sposob rozstawic zwierzeta? (1 - losowo, 0 - podac ilosc): ");
         int animalChoice = scanner.nextInt();
+        System.out.print("Czy generowac pustynie? (1 - tak, 0 - nie): ");
+        int sandChoice = scanner.nextInt();
+        System.out.print("Czy generowac gory? (1 - tak, 0 - nie): ");
+        int mountainChoice = scanner.nextInt();
         System.out.println("Czy chcesz ogladac kazdy krok symulacji, czy jednynie stan na planszy po calej turze?");
         System.out.println("1 - kazdy krok symulacji");
         System.out.println("0 - Jedynie po calej turze");
@@ -153,7 +201,18 @@ public class Main {
         Area [][]areaMap = new Area[size][size];
 
         //Generowanie map
-        generateAreaMap(areaMap, size);
+        if(sandChoice<=0 && mountainChoice<=0)
+            generateSimpleAreaMap(areaMap, size);
+        else{
+            if(sandChoice>0 && mountainChoice<=0)
+                generateAreaMapWithSand(areaMap, size);
+            else{
+                if(sandChoice<=0)
+                    generateAreaMapWithMountains(areaMap, size);
+                else generateFullAreaMap(areaMap, size);
+            }
+        }
+
         if(animalChoice == 1) generateRandomAnimalMap(animalMap, size, areaMap);
         else generateAnimalMap(animalMap, size, areaMap);
 
