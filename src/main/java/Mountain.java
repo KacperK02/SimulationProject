@@ -1,6 +1,6 @@
 public class Mountain extends Area{
-    public Mountain(int movingCost, int x, int y) {
+    public Mountain(int movingCost, int x, int y, int maxCost) {
         super(movingCost, x, y);
-        movingCost = 9;
+        movingCost = maxCost + 1;
     }
 }

@@ -4,23 +4,23 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class Main {
-    public static void generateRandomAnimalMap(Animal [][]animalMap, int size, Area [][]areaMap){
+    public static void generateRandomAnimalMap(Animal [][]animalMap, int size, Area [][]areaMap, int zebraPoints, int lionPoints){
         Random rand = new Random();
         for (int i=0; i<size;i++) {
             for (int j=0;j<size;j++) {
                 int chance = rand.nextInt(6);
                 if (chance == 1 && !(areaMap[i][j] instanceof Mountain))
-                    animalMap[i][j] = new Lion (5,i,j,true);
+                    animalMap[i][j] = new Lion (lionPoints,i,j,true);
 
                 else if (chance == 2 && !(areaMap[i][j] instanceof Mountain))
-                    animalMap[i][j] = new Zebra (5,i,j,true);
+                    animalMap[i][j] = new Zebra (zebraPoints,i,j,true);
 
                 else animalMap[i][j] = null;
             }
         }
     }
 
-    public static void generateAnimalMap(Animal [][]animalMap, int size, Area [][]areaMap){
+    public static void generateAnimalMap(Animal [][]animalMap, int size, Area [][]areaMap, int zebraPoints, int lionPoints){
         Random rand = new Random();
         Scanner scanner = new Scanner(System.in);
         int numberOfLions = 3 * size;
@@ -38,7 +38,7 @@ public class Main {
             int y = rand.nextInt(size);
             if(animalMap[x][y]==null)
                 if(!(areaMap[x][y] instanceof Mountain)){
-                    animalMap[x][y] = new Lion (5,x,y,true);
+                    animalMap[x][y] = new Lion (lionPoints,x,y,true);
                     numberOfLions--;
                 }
         }
@@ -47,14 +47,14 @@ public class Main {
             int y = rand.nextInt(size);
             if(animalMap[x][y]==null)
                 if(!(areaMap[x][y] instanceof Mountain)){
-                    animalMap[x][y] = new Zebra (5,x,y,true);
+                    animalMap[x][y] = new Zebra (zebraPoints,x,y,true);
                     numberOfZebra--;
                 }
         }
 
     }
 
-    public static void generateFullAreaMap(Area [][]areaMap, int size){
+    public static void generateFullAreaMap(Area [][]areaMap, int size, int maxCost){
         Random rand = new Random();
         for (int i=0; i<size;i++) {
             for (int j = 0; j < size; j++) {
@@ -62,7 +62,7 @@ public class Main {
                 switch(chance){
                     case 0 -> areaMap[i][j] = new Grass(1, i, j);
                     case 1 -> areaMap[i][j] = new Grass(2, i, j);
-                    case 2 -> areaMap[i][j] = new Mountain(9, i, j);
+                    case 2 -> areaMap[i][j] = new Mountain(9, i, j, maxCost);
                     case 3 -> areaMap[i][j] = new Sand(2, i, j);
                     default -> areaMap[i][j] = new Dirt(1, i, j);
                 }
@@ -99,7 +99,7 @@ public class Main {
         }
     }
 
-    public static void generateAreaMapWithMountains(Area [][]areaMap, int size){
+    public static void generateAreaMapWithMountains(Area [][]areaMap, int size, int maxCost){
         Random rand = new Random();
         for (int i=0; i<size;i++) {
             for (int j = 0; j < size; j++) {
@@ -107,7 +107,7 @@ public class Main {
                 switch(chance){
                     case 0 -> areaMap[i][j] = new Grass(1, i, j);
                     case 1 -> areaMap[i][j] = new Grass(2, i, j);
-                    case 2 -> areaMap[i][j] = new Mountain(9, i, j);
+                    case 2 -> areaMap[i][j] = new Mountain(9, i, j, maxCost);
                     default -> areaMap[i][j] = new Dirt(1, i, j);
                 }
             }
@@ -187,6 +187,15 @@ public class Main {
         }
         System.out.print("W jaki sposob rozstawic zwierzeta? (1 - losowo, 0 - podac ilosc): ");
         int animalChoice = scanner.nextInt();
+        int zebraPoints = 5, lionPoints = 5;
+        System.out.print("Podaj ilosc punktow ruchu dla zebry (domyslne 5): ");
+        zebraPoints = scanner.nextInt();
+        if(zebraPoints < 1) zebraPoints = 5;
+        System.out.print("Podaj ilosc punktow ruchu dla lwa (domyslne 5): ");
+        lionPoints = scanner.nextInt();
+        if(lionPoints < 1) lionPoints = 5;
+        int maxCost = zebraPoints;
+        if(lionPoints>maxCost) maxCost = lionPoints;
         System.out.print("Czy generowac pustynie? (1 - tak, 0 - nie): ");
         int sandChoice = scanner.nextInt();
         System.out.print("Czy generowac gory? (1 - tak, 0 - nie): ");
@@ -208,13 +217,13 @@ public class Main {
                 generateAreaMapWithSand(areaMap, size);
             else{
                 if(sandChoice<=0)
-                    generateAreaMapWithMountains(areaMap, size);
-                else generateFullAreaMap(areaMap, size);
+                    generateAreaMapWithMountains(areaMap, size, maxCost);
+                else generateFullAreaMap(areaMap, size, maxCost);
             }
         }
 
-        if(animalChoice == 1) generateRandomAnimalMap(animalMap, size, areaMap);
-        else generateAnimalMap(animalMap, size, areaMap);
+        if(animalChoice == 1) generateRandomAnimalMap(animalMap, size, areaMap, zebraPoints, lionPoints);
+        else generateAnimalMap(animalMap, size, areaMap, zebraPoints, lionPoints);
 
         int lionPopulation, zebraPopulation;
         PrintWriter save = new PrintWriter("simulation.txt");
@@ -271,7 +280,3 @@ public class Main {
         save.close();
     }
 }
-
-//TODO:
-//dodac mozliwosc podawania przez uzytkownika czy generowac gory/pustynie
-//dodac mozliwosc podawania przez uzytkownika ilosc punktow ruchu dla zwierzat
